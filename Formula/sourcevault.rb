@@ -5,7 +5,7 @@ class Sourcevault < Formula
   url "https://github.com/Ocasio-Perez/homebrew-sourcevault/releases/download/v1.0.0/sourcevault-v1.0.0.tar.gz"
   # From the release asset's .tar.gz.sha256 sidecar (published by the
   # private source repo's release workflow).
-  sha256 "REPLACE_AFTER_RELEASE"
+  sha256 "ae2ae409f9b6bda587eb6514c1adb968a0f086a0d38329a33924af97ad1c3b01"
   license :cannot_represent
 
   depends_on "node@24"
