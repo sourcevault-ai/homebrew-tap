@@ -65,8 +65,9 @@ class Sourcevault < Formula
       OLLAMA_HOST=http://127.0.0.1:11434
       OLLAMA_EMBED_MODEL=nomic-embed-text
 
-      # Free tier: one indexed repository. A license key (Settings -> License
-      # in the dashboard) raises or removes this cap.
+      # Unlicensed installs run a 7-day trial capped at one indexed
+      # repository. A license key (Settings -> License in the dashboard)
+      # continues past the trial and raises or removes the cap.
       SOURCEVAULT_DEFAULT_MAX_REPOS=1
 
       CODE_SEARCH_HMAC_SECRET=#{SecureRandom.hex(32)}
@@ -103,8 +104,9 @@ class Sourcevault < Formula
         cd #{opt_libexec} && npm run code-repos -- add <git-url>
         cd #{opt_libexec} && npm run index-codebase -- <repo-name>
 
-      The free tier includes one indexed repository. Enter a license key
-      (Settings -> License) to add more: https://trysourcevault.com
+      Includes a 7-day trial with one indexed repository. Enter a license
+      key (Settings -> License) to continue past the trial and add more
+      repositories: https://trysourcevault.com
     EOS
   end
 
