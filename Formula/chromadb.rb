@@ -31,7 +31,7 @@ class Chromadb < Formula
     <<~EOS
       Data is stored in #{var}/chromadb.
       Start the server (127.0.0.1:8000) with:
-        brew services start ocasio-perez/sourcevault/chromadb
+        brew services start sourcevault-ai/tap/chromadb
     EOS
   end
 
