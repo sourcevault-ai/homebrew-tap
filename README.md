@@ -30,6 +30,11 @@ Open <http://127.0.0.1:9000/dashboard/> and log in with the token from:
 grep DASHBOARD_TOKEN "$(brew --prefix)/etc/sourcevault/sourcevault.env"
 ```
 
+The **free tier includes one indexed repository** — enough to evaluate
+SourceVault on a real codebase. A license key (dashboard → Settings →
+License) raises or removes the cap and unlocks multi-repo ask and
+compliance features: <https://trysourcevault.com>
+
 ## Formulae
 
 | Formula | What it is |

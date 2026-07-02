@@ -65,6 +65,10 @@ class Sourcevault < Formula
       OLLAMA_HOST=http://127.0.0.1:11434
       OLLAMA_EMBED_MODEL=nomic-embed-text
 
+      # Free tier: one indexed repository. A license key (Settings -> License
+      # in the dashboard) raises or removes this cap.
+      SOURCEVAULT_DEFAULT_MAX_REPOS=1
+
       CODE_SEARCH_HMAC_SECRET=#{SecureRandom.hex(32)}
       DASHBOARD_TOKEN=#{SecureRandom.hex(32)}
     EOS
@@ -98,6 +102,9 @@ class Sourcevault < Formula
       Then open http://127.0.0.1:9000/dashboard/ and index a repo:
         cd #{opt_libexec} && npm run code-repos -- add <git-url>
         cd #{opt_libexec} && npm run index-codebase -- <repo-name>
+
+      The free tier includes one indexed repository. Enter a license key
+      (Settings -> License) to add more: https://trysourcevault.com
     EOS
   end
 
