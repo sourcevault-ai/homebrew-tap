@@ -9,8 +9,8 @@ class Sourcevault < Formula
   license :cannot_represent
 
   depends_on "node@24"
-  depends_on "sourcevault-ai/tap/chromadb"
   depends_on "ollama"
+  depends_on "sourcevault-ai/tap/chromadb"
 
   def install
     # Release tarballs ship dashboard/dist prebuilt; production deps only.
