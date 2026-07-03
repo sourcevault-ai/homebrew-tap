@@ -108,13 +108,15 @@ class Sourcevault < Formula
         brew services start sourcevault-ai/tap/chromadb
         brew services start sourcevault-ai/tap/sourcevault
 
-      Then open http://localhost:9000/dashboard/ and index a repo:
+      Open the dashboard — and put it in your Dock:
+        sourcevault app
+        open ~/Applications/SourceVault.app
+      (or just open http://localhost:9000 in a browser, where Chrome/Edge
+      offer "Install app" and Safari has File -> Add to Dock)
+
+      Index a repo from the dashboard, or from the terminal:
         cd #{opt_libexec} && npm run code-repos -- add <git-url>
         cd #{opt_libexec} && npm run index-codebase -- <repo-name>
-
-      Tip: install the dashboard as a desktop app — Chrome/Edge show an
-      install icon in the address bar (or Settings -> About -> Install app);
-      Safari: File -> Add to Dock.
 
       Includes a 7-day trial with one indexed repository. Enter a license
       key (Settings -> License) to continue past the trial and add more
