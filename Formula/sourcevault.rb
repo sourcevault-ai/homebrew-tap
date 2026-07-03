@@ -42,6 +42,14 @@ class Sourcevault < Formula
     (var/"sourcevault/state").mkpath
     (var/"sourcevault/repos").mkpath
 
+    # Upgrades delete the old keg while a running service keeps executing
+    # from it (every file lookup ENOENTs until a manual restart). Kick the
+    # service so it comes back on the keg just installed. kickstart -k is a
+    # quiet no-op when the service isn't loaded, and this runs BEFORE the
+    # config early-return below — that return fires on every upgrade.
+    quiet_system "launchctl", "kickstart", "-k",
+                 "gui/#{Process.uid}/homebrew.mxcl.sourcevault"
+
     # Generate config + secrets once; never overwritten on upgrade/reinstall.
     env_file = etc/"sourcevault/sourcevault.env"
     return if env_file.exist?
