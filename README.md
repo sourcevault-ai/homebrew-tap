@@ -57,3 +57,8 @@ survive upgrades. After an embedding-model change, reindex your repos.
 
 This tap also hosts the versioned release tarballs the `sourcevault` formula
 installs from (the source repository is private); see this repo's Releases tab.
+
+Maintainer note: if a formula carries a `revision` line (used to rebuild kegs
+for a formula-only change), it must be removed when the version next changes —
+the automated release-workflow bump only rewrites `url`/`sha256`, so drop the
+line by hand.
