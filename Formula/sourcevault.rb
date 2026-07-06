@@ -7,6 +7,9 @@ class Sourcevault < Formula
   # private source repo's release workflow).
   sha256 "76ca74dab89c94795309d5d3678f1a4191f7c8db2148308683bfb8b672de802f"
   license :cannot_represent
+  # Ships the SOURCEVAULT_ENV_FILE export in the launcher to existing 1.2.0
+  # installs. Remove on the next version bump.
+  revision 1
 
   depends_on "node@24"
   depends_on "ollama"
