@@ -32,6 +32,8 @@ class Sourcevault < Formula
         . "$ENV_FILE"
         set +a
       fi
+      # Tell the app which env file was loaded (token rotation rewrites it).
+      export SOURCEVAULT_ENV_FILE="$ENV_FILE"
       export SOURCEVAULT_STATE_DIR="${SOURCEVAULT_STATE_DIR:-#{var}/sourcevault/state}"
       export REPO_ROOT="${REPO_ROOT:-#{var}/sourcevault/repos}"
       exec "#{formula_opt_bin("node@24")}/node" "#{libexec}/bin/sourcevault.js" "$@"
