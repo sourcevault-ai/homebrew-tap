@@ -34,7 +34,7 @@ Installs include a **7-day trial with one indexed repository** — enough to
 evaluate SourceVault on a real codebase. A license key (dashboard →
 Settings → License) continues past the trial, raises or removes the repo
 cap, and unlocks multi-repo ask and compliance features:
-<https://trysourcevault.com>
+<https://sourcevault.ai>
 
 ## Formulae
 
@@ -60,5 +60,6 @@ installs from (the source repository is private); see this repo's Releases tab.
 
 Maintainer note: if a formula carries a `revision` line (used to rebuild kegs
 for a formula-only change), it must be removed when the version next changes —
-the automated release-workflow bump only rewrites `url`/`sha256`, so drop the
-line by hand.
+CI strips it automatically (`.github/workflows/drop-stale-revision.yml` fires
+on any push that changes a formula's `url`); drop it by hand only if that
+workflow is disabled.
