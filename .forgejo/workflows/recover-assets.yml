@@ -1,0 +1,37 @@
+name: Recover v1.11.0 release assets
+
+# One-off: pulls the v1.11.0 tarball + sha256 sidecar from the old GitHub
+# tap and attaches them to this repo's v1.11.0 release. Integrity is
+# enforced against the formula's pinned sha256 (hardcoded below), so a
+# tampered GitHub download cannot pass. Delete this file after one
+# successful run.
+
+on: workflow_dispatch
+
+permissions:
+  contents: write
+
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      FORGEJO_TOKEN: ${{ github.token }}
+      PIN: 83968cd6ad5aca7b3012e8178255905d926eb29e37e8e18e6b4fd9ad0b323681
+    steps:
+      - name: Download, verify against formula pin, attach
+        run: |
+          set -euo pipefail
+          base="https://github.com/sourcevault-ai/homebrew-tap/releases/download/v1.11.0"
+          curl -fsSLo sourcevault-v1.11.0.tar.gz "${base}/sourcevault-v1.11.0.tar.gz"
+          curl -fsSLo sourcevault-v1.11.0.tar.gz.sha256 "${base}/sourcevault-v1.11.0.tar.gz.sha256"
+          echo "${PIN}  sourcevault-v1.11.0.tar.gz" | sha256sum -c -
+          grep -q "^${PIN}$" sourcevault-v1.11.0.tar.gz.sha256
+          api="${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}"
+          auth="Authorization: token ${FORGEJO_TOKEN}"
+          rid=$(curl -fsS -H "$auth" "${api}/releases/tags/v1.11.0" | jq -r '.id')
+          for f in sourcevault-v1.11.0.tar.gz sourcevault-v1.11.0.tar.gz.sha256; do
+            curl -fsS -X POST -H "$auth" -F "attachment=@${f}" \
+              "${api}/releases/${rid}/assets?name=${f}" >/dev/null
+            echo "attached ${f}"
+          done
