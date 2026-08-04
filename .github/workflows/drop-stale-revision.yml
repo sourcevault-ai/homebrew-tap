@@ -16,6 +16,13 @@ permissions:
 
 jobs:
   drop-stale-revision:
+    # GitHub only: the tap is dual-hosted (lab Forgejo mirror at
+    # git.lab.sourcevault.ai/SourceVault/homebrew-tap), and Forgejo Actions
+    # also executes this directory. Without the gate, a sync push could fire
+    # the strip on both hosts and diverge the two copies with different bot
+    # commits. GitHub is authoritative for this automation — it is where the
+    # release workflow's formula bumps land.
+    if: github.server_url == 'https://github.com'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
