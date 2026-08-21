@@ -2,10 +2,10 @@ class Sourcevault < Formula
   desc "Private, local code memory for AI - cited semantic code search"
   # The source repo is private; this tap hosts the release tarballs.
   homepage "https://github.com/sourcevault-ai/homebrew-tap"
-  url "https://github.com/sourcevault-ai/homebrew-tap/releases/download/v1.45.0/sourcevault-v1.45.0.tar.gz"
+  url "https://github.com/sourcevault-ai/homebrew-tap/releases/download/v1.45.1/sourcevault-v1.45.1.tar.gz"
   # From the release asset's .tar.gz.sha256 sidecar (published by the
   # private source repo's release workflow).
-  sha256 "360e6c1a9218473f44539f3c2bd67a6ae848570f0e20418142807483ad941080"
+  sha256 "ce57ce4b7679ddeda115058fd09e90c82f6143f324364fda19c0ea4dccbbd2ef"
   license :cannot_represent
 
   depends_on "node@24"
