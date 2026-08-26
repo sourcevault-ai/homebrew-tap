@@ -10,7 +10,11 @@ class Sourcevault < Formula
 
   depends_on "node@24"
   depends_on "ollama"
-  depends_on "sourcevault-ai/tap/chromadb"
+  # No vector database since v1.49: code vectors and git history live in a
+  # SQLite file under the state dir. `sourcevault-ai/tap/chromadb` remains in
+  # this tap for installs that indexed on ChromaDB before v1.49 (their
+  # settings pin it until they run `npm run migrate-vectors -- --to sqlite`),
+  # but it is no longer a dependency of a fresh install.
 
   def install
     # Release tarballs ship dashboard/dist prebuilt; production deps only.
@@ -69,6 +73,8 @@ class Sourcevault < Formula
       REPO_ROOT=#{var}/sourcevault/repos
       SOURCEVAULT_STATE_DIR=#{var}/sourcevault/state
 
+      # Only used by installs whose stores are pinned to ChromaDB (indexed
+      # before v1.49). Fresh installs keep vectors in a local SQLite file.
       CHROMA_URL=http://127.0.0.1:8000
       CHROMA_COLLECTION=codebase
 
@@ -101,14 +107,21 @@ class Sourcevault < Formula
       Your dashboard login token:
         grep DASHBOARD_TOKEN #{etc}/sourcevault/sourcevault.env
 
-      Pull the required Ollama models once:
+      Pull the required Ollama models once (the server picks the reasoning
+      model by RAM: qwen3.5:9b on 16 GB+, qwen3.5:4b on 8-12 GB):
         ollama pull nomic-embed-text
-        ollama pull qwen2.5-coder:14b
+        ollama pull qwen3.5:9b
 
-      Start everything:
+      Start everything (there is no vector database to start: code vectors
+      and git history live in a local SQLite file):
         brew services start ollama
-        brew services start sourcevault-ai/tap/chromadb
         brew services start sourcevault-ai/tap/sourcevault
+
+      Upgrading from 1.48 or earlier? Your indexes were built on ChromaDB and
+      stay pinned to it, so keep `brew services start sourcevault-ai/tap/chromadb`
+      running (and do not `brew autoremove` it) until you run
+      `npm run migrate-vectors -- --to sqlite` in #{opt_libexec} and switch
+      the stores under Settings -> Advanced.
 
       Open the dashboard — and put it in your Dock:
         sourcevault app
@@ -127,7 +140,7 @@ class Sourcevault < Formula
   end
 
   test do
-    # The server needs Chroma/Ollama to be useful, but it must at least boot
+    # The server needs Ollama to be useful, but it must at least boot
     # and answer the liveness probe with nothing else running.
     port = free_port
     env = { "PORT" => port.to_s, "HOST" => "127.0.0.1", "SOURCEVAULT_SKIP_STARTUP_PROBE" => "1",
