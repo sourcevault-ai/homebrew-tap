@@ -134,8 +134,8 @@ class Sourcevault < Formula
         cd #{opt_libexec} && npm run index-codebase -- <repo-name>
 
       Includes a 7-day trial with one indexed repository. Enter a license
-      key (Settings -> License) to continue past the trial and add more
-      repositories: https://trysourcevault.com
+      key (Settings -> Plan & licence) to continue past the trial and add more
+      repositories: https://sourcevault.ai
     EOS
   end
 
