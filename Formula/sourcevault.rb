@@ -53,8 +53,13 @@ class Sourcevault < Formula
     # service so it comes back on the keg just installed. kickstart -k is a
     # quiet no-op when the service isn't loaded, and this runs BEFORE the
     # config early-return below — that return fires on every upgrade.
-    quiet_system "launchctl", "kickstart", "-k",
-                 "gui/#{Process.uid}/homebrew.mxcl.sourcevault"
+    # Homebrew 6 labels services `sh.brew.<name>`; older Homebrew used
+    # `homebrew.mxcl.<name>`. Kick whichever is loaded (both calls are quiet
+    # no-ops for a label that is not), or the upgrade leaves the previous
+    # version serving from a keg that no longer exists.
+    %w[sh.brew.sourcevault homebrew.mxcl.sourcevault].each do |label|
+      quiet_system "launchctl", "kickstart", "-k", "gui/#{Process.uid}/#{label}"
+    end
 
     # Generate config + secrets once; never overwritten on upgrade/reinstall.
     env_file = etc/"sourcevault/sourcevault.env"
