@@ -107,15 +107,19 @@ class Sourcevault < Formula
       Your dashboard login token:
         grep DASHBOARD_TOKEN #{etc}/sourcevault/sourcevault.env
 
-      Pull the required Ollama models once (the server picks the reasoning
-      model by RAM: qwen3.5:9b on 16 GB+, qwen3.5:4b on 8-12 GB):
+      Start the service (it starts a down brew-managed Ollama itself at boot;
+      there is no vector database to start: code vectors and git history
+      live in a local SQLite file):
+        brew services start sourcevault-ai/tap/sourcevault
+
+      Then pull the required Ollama models once; they need the Ollama the
+      line above started (the server picks the reasoning model by RAM:
+      qwen3.5:9b on 16 GB+, qwen3.5:4b on 8-12 GB):
         ollama pull nomic-embed-text
         ollama pull qwen3.5:9b
 
-      Start everything (there is no vector database to start: code vectors
-      and git history live in a local SQLite file):
-        brew services start ollama
-        brew services start sourcevault-ai/tap/sourcevault
+      Is it working? Server, token, models, stores, repositories, service:
+        sourcevault doctor
 
       Upgrading from 1.48 or earlier? Your indexes were built on ChromaDB and
       stay pinned to it, so keep `brew services start sourcevault-ai/tap/chromadb`

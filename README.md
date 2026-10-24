@@ -14,15 +14,18 @@ That pulls everything SourceVault needs: Node 24 and [Ollama](https://ollama.com
 `$(brew --prefix)/etc/sourcevault/`. There is no vector database to run: code
 vectors and git history live in a SQLite file under `var/sourcevault/`.
 
-Then pull the models once and start the services. The server picks the
-reasoning model by RAM: `qwen3.5:9b` on 16 GB+, `qwen3.5:4b` on 8-12 GB.
+Then start the service and pull the models once. The service starts a
+down brew-managed Ollama itself at boot, so Ollama needs no separate start,
+and the pulls need that running Ollama. The server picks the reasoning model
+by RAM: `qwen3.5:9b` on 16 GB+, `qwen3.5:4b` on 8-12 GB.
 
 ```bash
+brew services start sourcevault-ai/tap/sourcevault
+
 ollama pull nomic-embed-text
 ollama pull qwen3.5:9b
 
-brew services start ollama
-brew services start sourcevault-ai/tap/sourcevault
+sourcevault doctor      # is it working? server, token, models, stores, repos, service
 ```
 
 Open <http://127.0.0.1:9000/dashboard/> and log in with the token from:
