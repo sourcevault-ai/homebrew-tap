@@ -107,24 +107,21 @@ class Sourcevault < Formula
 
   def caveats
     <<~EOS
+      One command finishes the install: it starts the service (which starts
+      Ollama), pulls the embedding model and the reasoning model for this
+      machine's RAM (qwen3.5:9b on 16 GB+, qwen3.5:4b on 8-12 GB), checks
+      everything, and opens the dashboard already signed in:
+        sourcevault setup
+
+      Until the models arrive the dashboard runs lite (keyword and symbol
+      search, file reads, MCP) and switches to the full stack by itself.
+      Later: `sourcevault open` opens the dashboard signed in without showing
+      the token; `sourcevault doctor` checks the install.
+
       Configuration (secrets generated at install):
         #{etc}/sourcevault/sourcevault.env
-      Your dashboard login token:
+      The token itself, for another machine or an API client:
         grep DASHBOARD_TOKEN #{etc}/sourcevault/sourcevault.env
-
-      Start the service (it starts a down brew-managed Ollama itself at boot;
-      there is no vector database to start: code vectors and git history
-      live in a local SQLite file):
-        brew services start sourcevault-ai/tap/sourcevault
-
-      Then pull the required Ollama models once; they need the Ollama the
-      line above started (the server picks the reasoning model by RAM:
-      qwen3.5:9b on 16 GB+, qwen3.5:4b on 8-12 GB):
-        ollama pull nomic-embed-text
-        ollama pull qwen3.5:9b
-
-      Is it working? Server, token, models, stores, repositories, service:
-        sourcevault doctor
 
       Upgrading from 1.48 or earlier? Your indexes were built on ChromaDB and
       stay pinned to it, so keep `brew services start sourcevault-ai/tap/chromadb`
@@ -132,11 +129,10 @@ class Sourcevault < Formula
       `npm run migrate-vectors -- --to sqlite` in #{opt_libexec} and switch
       the stores under Settings -> Advanced.
 
-      Open the dashboard — and put it in your Dock:
+      Put the dashboard in your Dock:
         sourcevault app
-        open ~/Applications/SourceVault.app
-      (or just open http://localhost:9000 in a browser, where Chrome/Edge
-      offer "Install app" and Safari has File -> Add to Dock)
+      (or in a browser Chrome/Edge offer "Install app" and Safari has
+      File -> Add to Dock)
 
       Index a repo from the dashboard, or from the terminal:
         cd #{opt_libexec} && npm run code-repos -- add <git-url>
