@@ -70,3 +70,11 @@ for a formula-only change), it must be removed when the version next changes —
 CI strips it automatically (`.github/workflows/drop-stale-revision.yml` fires
 on any push that changes a formula's `url`); drop it by hand only if that
 workflow is disabled.
+
+## License
+
+The files in this repository (the formulas, the workflow and this README)
+are MIT licensed; see `LICENSE`. That licence does not extend to SourceVault
+itself: the release tarballs, the container image and the MCP bundle that the
+formula and the Releases tab distribute are commercial software under the
+terms at https://sourcevault.ai, with a free tier for one repository.
